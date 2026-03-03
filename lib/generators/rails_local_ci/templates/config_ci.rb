@@ -2,6 +2,15 @@
 
 CI.run do
   step "Setup", "bin/setup --skip-server"
+
+  # Run independent checks in parallel for faster feedback:
+  #
+  #   group "Checks", parallel: 3 do
+  #     step "Style: Ruby",        "bin/rubocop"          if File.exist?("bin/rubocop")
+  #     step "Security: Brakeman", "bin/brakeman --quiet"  if File.exist?("bin/brakeman")
+  #     step "Security: Gems",     "bin/bundler-audit"     if File.exist?("bin/bundler-audit")
+  #   end
+
   step "Style: Ruby",                      "bin/rubocop"        if File.exist?("bin/rubocop")
   step "Security: Gem audit",              "bin/bundler-audit"  if File.exist?("bin/bundler-audit")
   step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error" if File.exist?("bin/brakeman")
