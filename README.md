@@ -14,6 +14,7 @@ When you do upgrade to Rails 8.1, remove the gem — `bin/ci` and `config/ci.rb`
 - [Installation](#installation)
 - [Usage](#usage)
 - [DSL Reference](#dsl-reference)
+- [Parallel Groups](#parallel-groups)
 - [Fail-Fast Mode](#fail-fast-mode)
 - [Commit Signoff](#commit-signoff)
 - [CI Integration](#ci-integration)
@@ -103,9 +104,6 @@ CI.run do
 
   if success?
     heading "All CI checks passed!", "Your changes are ready for review"
-    # Optional: post a green commit status to unblock PR merge — see Commit Signoff below.
-    # step "Signoff: All systems go. Ready for merge and deploy.", "gh signoff"     # GitHub
-    # step "Signoff: All systems go. Ready for merge and deploy.", "bb-signoff"     # Bitbucket
   else
     failure "CI checks failed", "Fix the issues above before submitting your PR"
   end
@@ -124,6 +122,8 @@ All methods are available inside the `CI.run do ... end` block in `config/ci.rb`
 |--------|-------------|
 | `step "Title", "command"` | Run a shell command; records pass/fail and elapsed time |
 | `step "Title", "cmd", "arg1", "arg2"` | Run with multiple args — passed directly to `system`, correctly shell-escaped |
+| `group "Title" do ... end` | Group steps visually; runs sequentially |
+| `group "Title", parallel: N do ... end` | Run up to N steps concurrently in threads |
 | `success?` | Returns `true` if every step so far has passed |
 | `heading "Title"` | Print a green banner |
 | `heading "Title", "Subtitle"` | Print a green banner with a gray subtitle; accepts `padding: false` to suppress blank lines |
@@ -139,6 +139,7 @@ All methods are available inside the `CI.run do ... end` block in `config/ci.rb`
 | `:subtitle` | Gray (bold) |
 | `:error` | Red (bold) |
 | `:success` | Green (bold) |
+| `:progress` | Cyan (bold) |
 
 `CI.run` accepts optional title and subtitle overrides:
 
@@ -147,6 +148,32 @@ CI.run "My App CI", "Linting, security, and tests" do
   # ...
 end
 ```
+
+---
+
+## Parallel Groups
+
+Run multiple independent steps concurrently using `group`:
+
+```ruby
+CI.run do
+  step "Setup", "bin/setup --skip-server"
+
+  group "Checks", parallel: 3 do
+    step "Style: Ruby",        "bin/rubocop"
+    step "Security: Brakeman", "bin/brakeman --quiet"
+    step "Security: Gems",     "bin/bundler-audit"
+  end
+
+  step "Tests: Rails", "bin/rails test"
+end
+```
+
+`parallel: N` runs up to N steps in concurrent threads. Output is captured per-step (via PTY when available, Open3 otherwise) and displayed in declaration order after all steps complete — no interleaving. A live progress indicator shows which steps are running.
+
+`group` without `parallel:` (or `parallel: 1`) runs steps sequentially, useful for visual grouping.
+
+**Nested groups**: a `group` inside a parallel group runs its steps sequentially within that thread slot. Sub-groups cannot themselves be parallelized — attempting to set `parallel:` on a nested group raises `ArgumentError`.
 
 ---
 
