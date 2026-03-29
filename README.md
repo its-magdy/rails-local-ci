@@ -210,10 +210,10 @@ end
 
 ### Bitbucket
 
-Install [`bb-signoff`](https://github.com/Mohamed-Omar96/bb-signoff):
+Install [`bb-signoff`](https://github.com/its-magdy/bb-signoff):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Mohamed-Omar96/bb-signoff/main/bb-signoff \
+curl -fsSL https://raw.githubusercontent.com/its-magdy/bb-signoff/main/bb-signoff \
   -o /usr/local/bin/bb-signoff && chmod +x /usr/local/bin/bb-signoff
 ```
 
