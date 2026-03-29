@@ -1,5 +1,8 @@
 # rails-local-ci
 
+[![Gem Version](https://badge.fury.io/rb/rails-local-ci.svg)](https://rubygems.org/gems/rails-local-ci)
+[![CI](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml)
+
 > Backport of Rails 8.1's `ActiveSupport::ContinuousIntegration` for Rails 5.2–7.x
 
 Rails 8.1 introduced a standardized `bin/ci` script and `ActiveSupport::ContinuousIntegration` class ([PR #54693](https://github.com/rails/rails/pull/54693)) that runs the same CI steps locally and in the cloud. This gem ships that class for apps on Rails 5.2–7.x so you don't have to wait for an upgrade.
