@@ -1,6 +1,12 @@
 MIT License
 
-Copyright (c) 2024 rails_local_ci contributors
+Copyright (c) 2026 rails_local_ci contributors
+
+---
+
+Portions of this software are adapted from Ruby on Rails (https://github.com/rails/rails).
+Copyright (c) David Heinemeier Hansson, licensed under the MIT License.
+See https://github.com/rails/rails/blob/main/MIT-LICENSE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

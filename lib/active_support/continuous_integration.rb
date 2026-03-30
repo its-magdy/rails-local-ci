@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# This file is adapted from Ruby on Rails (https://github.com/rails/rails).
+# Copyright (c) David Heinemeier Hansson, licensed under the MIT License.
+# See https://github.com/rails/rails/blob/main/MIT-LICENSE
+
 module ActiveSupport
   # Provides a DSL for declaring a continuous integration workflow that can be run either locally or in the cloud.
   # Each step is timed, reports success/error, and is aggregated into a collective report that reports total runtime,

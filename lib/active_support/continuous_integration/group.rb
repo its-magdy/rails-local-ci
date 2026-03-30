@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# This file is adapted from Ruby on Rails (https://github.com/rails/rails).
+# Copyright (c) David Heinemeier Hansson, licensed under the MIT License.
+# See https://github.com/rails/rails/blob/main/MIT-LICENSE
+
 require "tmpdir"
 
 module ActiveSupport
