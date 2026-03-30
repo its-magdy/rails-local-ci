@@ -1,3 +1,7 @@
+# This file is adapted from Ruby on Rails (https://github.com/rails/rails).
+# Copyright (c) David Heinemeier Hansson, licensed under the MIT License.
+# See https://github.com/rails/rails/blob/main/MIT-LICENSE
+
 # Run using bin/ci
 
 CI.run do
