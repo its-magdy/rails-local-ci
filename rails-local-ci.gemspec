@@ -10,6 +10,11 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/its-magdy/rails-local-ci"
   spec.license       = "MIT"
 
+  spec.metadata["rubygems_mfa_required"] = "true"
+  spec.metadata["source_code_uri"]       = spec.homepage
+  spec.metadata["changelog_uri"]         = "#{spec.homepage}/blob/main/CHANGELOG.md"
+  spec.metadata["bug_tracker_uri"]       = "#{spec.homepage}/issues"
+
   spec.files         = Dir["lib/**/*", "LICENSE", "README.md"]
   spec.require_paths = ["lib"]
 

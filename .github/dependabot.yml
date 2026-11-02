@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # "monthly" runs on the first day of each month.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      bundler:
+        patterns: ["*"]
