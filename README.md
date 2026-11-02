@@ -4,11 +4,13 @@
 [![Gem downloads](https://img.shields.io/gem/dt/rails-local-ci)](https://rubygems.org/gems/rails-local-ci)
 [![CI](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml)
 
-> Backport of Rails 8.1's `ActiveSupport::ContinuousIntegration` for Rails 5.2–7.x
+> Backport of Rails' `ActiveSupport::ContinuousIntegration` (as on Rails `main`) for Rails 5.2–8.1
 
-Rails 8.1 introduced a standardized `bin/ci` script and `ActiveSupport::ContinuousIntegration` class ([PR #54693](https://github.com/rails/rails/pull/54693)) that runs the same CI steps locally and in the cloud. This gem ships that class for apps on Rails 5.2–7.x so you don't have to wait for an upgrade.
+Rails 8.1 introduced a standardized `bin/ci` script and `ActiveSupport::ContinuousIntegration` class ([PR #54693](https://github.com/rails/rails/pull/54693)) that runs the same CI steps locally and in the cloud. This gem ships that class for apps on Rails 5.2–8.1 so you don't have to wait for an upgrade.
 
-When you do upgrade to Rails 8.1, remove the gem — `bin/ci` and `config/ci.rb` stay unchanged because Rails 8.1 provides the class at the same load path.
+The gem tracks Rails `main`, so it also includes features that came after 8.1 shipped: parallel `group`s, fail-fast mode, and the end-of-run failure summary. Rails 8.1.x doesn't have them, so the gem is useful on 8.1 too.
+
+Once you upgrade to Rails 8.2, remove the gem. `bin/ci` and `config/ci.rb` stay unchanged because Rails provides the class at the same load path.
 
 ---
 
@@ -23,7 +25,7 @@ When you do upgrade to Rails 8.1, remove the gem — `bin/ci` and `config/ci.rb`
 - [Commit Signoff](#commit-signoff)
 - [CI Integration](#ci-integration)
 - [Running Tests](#running-tests)
-- [Upgrading to Rails 8.1](#upgrading-to-rails-81)
+- [Upgrading to Rails 8.2](#upgrading-to-rails-82)
 - [Compatibility](#compatibility)
 - [How It Works](#how-it-works)
 - [License](#license)
@@ -33,7 +35,7 @@ When you do upgrade to Rails 8.1, remove the gem — `bin/ci` and `config/ci.rb`
 ## Prerequisites
 
 - Ruby >= 2.4
-- Rails >= 5.2 and < 8.1
+- Rails >= 5.2 and < 8.2
 
 ---
 
@@ -277,14 +279,18 @@ bundle exec ruby test/continuous_integration_test.rb
 
 ---
 
-## Upgrading to Rails 8.1
+## Upgrading to Rails 8.2
 
 1. Remove `gem "rails-local-ci"` from your `Gemfile`
 2. Run `bundle install`
 
-`bin/ci` and `config/ci.rb` require no changes. Rails 8.1 ships `ActiveSupport::ContinuousIntegration` at the same load path this gem uses.
+`bin/ci` and `config/ci.rb` require no changes. Rails 8.2 (in development on Rails `main` as of Nov 2026) ships `ActiveSupport::ContinuousIntegration` at the same load path this gem uses, with `group`, fail-fast, and the failure summary built in.
 
-> **Note:** This gem tracks Rails `main`. Some features landed on `main` after 8.1 was released and are only in Rails 8.2 and later: `group` / `parallel:`, fail-fast mode (`-f` / `--fail-fast`), and the end-of-run failure summary. Rails 8.1.x (checked through 8.1.4) ships only the original `step`, `success?`, `heading`, `echo`, and `failure` DSL. If your `config/ci.rb` uses `group`, remove those blocks (keep the `step`s inside them) when you move to 8.1, or wait for Rails 8.2.
+### Rails 8.1
+
+Keep the gem on Rails 8.1. Rails 8.1.x (checked through 8.1.4) only ships the original `step`, `success?`, `heading`, `echo`, and `failure` DSL. Without the gem, a `config/ci.rb` that uses `group` fails with `NoMethodError`, and `-f` / `--fail-fast` is silently ignored. With the gem installed, its copy of the class takes precedence over the Rails 8.1 built-in, because Bundler puts the gem's `lib` ahead of Active Support's on the load path.
+
+If you'd rather drop the gem on 8.1, replace each `group` block with the `step`s inside it, and stop relying on `-f`.
 
 ---
 
@@ -292,23 +298,24 @@ bundle exec ruby test/continuous_integration_test.rb
 
 | Rails | Ruby  | Status |
 |-------|-------|--------|
+| 8.1   | 3.2+  | Tested |
 | 7.2   | 3.1+  | Tested |
-| 7.1   | 3.0+  | Compatible |
+| 7.1   | 3.0+  | Tested |
 | 7.0   | 2.7+  | Compatible |
 | 6.1   | 2.7+  | Compatible |
 | 6.0   | 2.7+  | Compatible |
 | 5.2   | 2.4+  | Compatible |
-| 8.1+  | —     | Use built-in — remove this gem |
+| 8.2+  | —     | Use built-in — remove this gem |
 
 ---
 
 ## How It Works
 
-The gem places `ActiveSupport::ContinuousIntegration` at `lib/active_support/continuous_integration.rb` — the identical load path Rails 8.1 uses. The generated `bin/ci` does:
+The gem places `ActiveSupport::ContinuousIntegration` at `lib/active_support/continuous_integration.rb` — the identical load path Rails uses. The generated `bin/ci` does:
 
 ```ruby
 require_relative "../config/boot"
-require "active_support/continuous_integration"  # resolved by this gem, or Rails 8.1 built-in
+require "active_support/continuous_integration"  # resolved by this gem, or the Rails built-in once the gem is removed
 
 CI = ActiveSupport::ContinuousIntegration
 require_relative "../config/ci.rb"

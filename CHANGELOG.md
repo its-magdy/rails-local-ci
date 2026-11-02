@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Allow Rails 8.1 (`rails >= 5.2, < 8.2`). Rails 8.1.x lacks `group`, fail-fast, and the failure summary, so the gem now covers 8.1 apps; remove it when upgrading to Rails 8.2
+- CI: added a Rails 8.1 appraisal; pinned the Rails 7.1 appraisal to `~> 7.1.0` (it previously resolved to 7.2)
 - Synced `ActiveSupport::ContinuousIntegration` with Rails main @ 090f540: `COLORS` is now frozen; removed unused `name` parameter from `Group#execute_group` (internal)
 - Stabilized the parallel-group fail-fast test (upstream rails/rails@d475d9b)
-- README: noted that `group`, fail-fast, and the failure summary are not in Rails 8.1.x (they land in 8.2)
+- README: documented Rails 8.1 support and the Rails 8.2 upgrade path
 
 ### Security
 

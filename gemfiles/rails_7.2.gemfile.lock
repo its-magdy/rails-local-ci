@@ -2,7 +2,7 @@ PATH
   remote: ..
   specs:
     rails-local-ci (0.1.1)
-      rails (>= 5.2, < 8.1)
+      rails (>= 5.2, < 8.2)
 
 GEM
   remote: https://rubygems.org/
