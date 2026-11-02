@@ -288,7 +288,7 @@ bundle exec ruby test/continuous_integration_test.rb
 
 ### Rails 8.1
 
-Keep the gem on Rails 8.1. Rails 8.1.x (checked through 8.1.4) only ships the original `step`, `success?`, `heading`, `echo`, and `failure` DSL. Without the gem, a `config/ci.rb` that uses `group` fails with `NoMethodError`, and `-f` / `--fail-fast` is silently ignored. With the gem installed, its copy of the class takes precedence over the Rails 8.1 built-in, because Bundler puts the gem's `lib` ahead of Active Support's on the load path.
+Keep the gem on Rails 8.1. Rails 8.1.x (checked through 8.1.4) only ships the original `step`, `success?`, `heading`, `echo`, and `failure` DSL. Without the gem, a `config/ci.rb` that uses `group` fails with `NoMethodError`, and `-f` / `--fail-fast` is silently ignored. With the gem installed, its copy of the class takes precedence over the Rails 8.1 built-in, because Bundler puts the gem's `lib` ahead of Active Support's on the load path. That holds for the normal boot order, where `bundler/setup` runs (via `config/boot`) before anything loads the class, as the generated `bin/ci` does. If something requires Rails' built-in copy first, or loads it by absolute path, the gem cannot replace it.
 
 If you'd rather drop the gem on 8.1, replace each `group` block with the `step`s inside it, and stop relying on `-f`.
 
