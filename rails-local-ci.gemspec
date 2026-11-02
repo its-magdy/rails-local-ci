@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "rails-local-ci"
-  spec.version       = "0.1.1"
+  spec.version       = "0.2.0"
   spec.authors       = ["Mohamed Magdy Omar"]
   spec.email         = ["mm.medany96@gmail.com"]
   spec.summary       = "Backport of Rails Local CI (ActiveSupport::ContinuousIntegration, as on Rails main) for Rails 5.2–8.1"
