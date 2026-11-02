@@ -284,6 +284,8 @@ bundle exec ruby test/continuous_integration_test.rb
 
 `bin/ci` and `config/ci.rb` require no changes. Rails 8.1 ships `ActiveSupport::ContinuousIntegration` at the same load path this gem uses.
 
+> **Note:** This gem tracks Rails `main`. Some features landed on `main` after 8.1 was released and are only in Rails 8.2 and later: `group` / `parallel:`, fail-fast mode (`-f` / `--fail-fast`), and the end-of-run failure summary. Rails 8.1.x (checked through 8.1.4) ships only the original `step`, `success?`, `heading`, `echo`, and `failure` DSL. If your `config/ci.rb` uses `group`, remove those blocks (keep the `step`s inside them) when you move to 8.1, or wait for Rails 8.2.
+
 ---
 
 ## Compatibility

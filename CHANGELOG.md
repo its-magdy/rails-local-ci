@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Synced `ActiveSupport::ContinuousIntegration` with Rails main @ 090f540: `COLORS` is now frozen; removed unused `name` parameter from `Group#execute_group` (internal)
+- Stabilized the parallel-group fail-fast test (upstream rails/rails@d475d9b)
+- README: noted that `group`, fail-fast, and the failure summary are not in Rails 8.1.x (they land in 8.2)
+
 ### Security
 
 - Require MFA for RubyGems pushes (`rubygems_mfa_required` gemspec metadata)

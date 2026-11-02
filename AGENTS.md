@@ -52,11 +52,12 @@ The load path placement (`active_support/continuous_integration`) is intentional
 
 ## Implementation Sync
 
-The gem tracks Rails `main`. Current implementation is synced to commit `10db73a0b6c4e3646ecc300c23e8a454ee72e02b`, which includes:
+The gem tracks Rails `main`. Current implementation is synced to commit `090f5408f4f81e78cd9232f274a8c2f3624a2b43`, which includes:
 - **#54693** (Mar 2025): Original `ContinuousIntegration` class
 - **#56049** (Oct 2025): Failure summary (`↳ Title failed`) at end of run
 - **#56194** (Nov 2025): Fail-fast mode (`-f` / `--fail-fast`)
 - **#56774** (Feb 2026): Parallel step groups (`group "Name", parallel: N`)
+- Follow-ups through Nov 2026: `COLORS` frozen, unused `name` param removed from `Group#execute_group`, fail-fast parallel test stabilized. Upstream RDoc→Markdown comment conversion intentionally not ported.
 
 ## Key Constraints
 
