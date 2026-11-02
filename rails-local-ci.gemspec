@@ -3,10 +3,10 @@ Gem::Specification.new do |spec|
   spec.version       = "0.1.1"
   spec.authors       = ["Mohamed Magdy Omar"]
   spec.email         = ["mm.medany96@gmail.com"]
-  spec.summary       = "Backport of Rails 8.1 Local CI (ActiveSupport::ContinuousIntegration) for Rails 5.2–7.x"
+  spec.summary       = "Backport of Rails Local CI (ActiveSupport::ContinuousIntegration, as on Rails main) for Rails 5.2–8.1"
   spec.description   = "Ships ActiveSupport::ContinuousIntegration and a generator that installs bin/ci + config/ci.rb. " \
-                       "Any Rails 6/7 app can `gem 'rails-local-ci'` and get the same Local CI DX as Rails 8.1 built-in. " \
-                       "Upgrading to Rails 8.1 later = just remove the gem, zero code changes."
+                       "Any Rails 5.2–8.1 app can `gem 'rails-local-ci'` and get the full Local CI DX from Rails main (parallel groups, fail-fast, failure summary). " \
+                       "Upgrading to Rails 8.2 later = just remove the gem, zero code changes."
   spec.homepage      = "https://github.com/its-magdy/rails-local-ci"
   spec.license       = "MIT"
 
@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.4"
 
-  spec.add_dependency "rails", ">= 5.2", "< 8.1"
+  spec.add_dependency "rails", ">= 5.2", "< 8.2"
 end

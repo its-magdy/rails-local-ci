@@ -8,6 +8,16 @@ class ContinuousIntegrationTest < Minitest::Test
     @CI = ActiveSupport::ContinuousIntegration.new
   end
 
+  # On Rails 8.1, Active Support ships its own (older) continuous_integration.rb at the
+  # same load path. The gem's copy must win so `group`, fail-fast, and the failure summary work.
+  def test_gem_copy_takes_precedence_on_load_path
+    skip "requires $LOAD_PATH.resolve_feature_path (Ruby 2.7+)" unless $LOAD_PATH.respond_to?(:resolve_feature_path)
+    _type, path = $LOAD_PATH.resolve_feature_path("active_support/continuous_integration")
+    skip "gem lib is not on $LOAD_PATH; run via bundle exec" if path.nil?
+    expected = File.expand_path("../lib/active_support/continuous_integration.rb", __dir__)
+    assert_equal File.realpath(expected), File.realpath(path)
+  end
+
   def test_successful_step
     output = capture_io { @CI.step "Success!", "true" }.to_s
     assert_match(/Success! passed/, output)
@@ -165,12 +175,15 @@ class ContinuousIntegrationTest < Minitest::Test
     capture_io do
       started = Time.now.to_f
       @CI.group("Checks", parallel: 2) do
-        step "Sleep 1", "sleep 0.2"
-        step "Sleep 2", "sleep 0.2"
+        step "Sleep 1", "sleep 0.5"
+        step "Sleep 2", "sleep 0.5"
       end
       elapsed = Time.now.to_f - started
 
-      assert elapsed < 0.35, "Expected parallel execution to complete in ~0.2s, took #{elapsed}s"
+      # Diverges from upstream (0.2s sleeps, < 0.35s bound), which flaked on slow CI runners:
+      # progress-thread join (up to 0.1s) plus PTY spawn overhead can exceed the 0.15s margin.
+      # Sequential execution would take >= 1.0s, so < 0.9s still proves the steps overlapped.
+      assert elapsed < 0.9, "Expected parallel execution to complete in ~0.5s, took #{elapsed}s"
     end
 
     assert @CI.success?
@@ -305,9 +318,9 @@ class ContinuousIntegrationTest < Minitest::Test
             @CI.run("CI", nil) do
               group "Checks", parallel: 2 do
                 step "Fail", "false"
-                step "Should not run 1", "true"
-                step "Should not run 2", "true"
-                step "Should not run 3", "true"
+                step "Should not run 1", "sleep", "0.1"
+                step "Should not run 2", "sleep", "0.1"
+                step "Should not run 3", "sleep", "0.1"
               end
             end
           end

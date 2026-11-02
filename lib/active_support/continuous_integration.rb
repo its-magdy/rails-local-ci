@@ -33,7 +33,7 @@ module ActiveSupport
       error: "\033[1;31m",    # Red
       success: "\033[1;32m",  # Green
       progress: "\033[1;36m"  # Cyan
-    }
+    }.freeze
 
     attr_reader :results
 
