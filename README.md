@@ -1,6 +1,7 @@
 # rails-local-ci
 
-[![Gem Version](https://badge.fury.io/rb/rails-local-ci.svg)](https://rubygems.org/gems/rails-local-ci)
+[![Gem version](https://img.shields.io/gem/v/rails-local-ci)](https://rubygems.org/gems/rails-local-ci)
+[![Gem downloads](https://img.shields.io/gem/dt/rails-local-ci)](https://rubygems.org/gems/rails-local-ci)
 [![CI](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/its-magdy/rails-local-ci/actions/workflows/ci.yml)
 
 > Backport of Rails 8.1's `ActiveSupport::ContinuousIntegration` for Rails 5.2–7.x
